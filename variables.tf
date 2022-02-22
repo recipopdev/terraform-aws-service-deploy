@@ -1,13 +1,16 @@
 variable "service" {
-  type = string
+  description = "The name of the service being deployed"
+  type        = string
 }
 
 variable "cluster" {
-  type = string
+  description = "The name of the cluster to deploy into"
+  type        = string
 }
 
 variable "container" {
-  type = object({
+  description = "The details of the container that is being deployed"
+  type        = object({
     cpu         = number
     memory      = number
     image       = string
@@ -18,7 +21,8 @@ variable "container" {
 }
 
 variable "loadbalancer" {
-  type = object({
+  description = "The loadbalancer the service will be attached to"
+  type        = object({
     listener       = string
     security_group = string
     dns            = string
@@ -26,7 +30,8 @@ variable "loadbalancer" {
 }
 
 variable "network" {
-  type = object({
+  description = "The network details for the swervice that is being deployed"
+  type        = object({
     vpc     = string
     subnets = list(string)
     port    = number
@@ -34,5 +39,6 @@ variable "network" {
 }
 
 variable "log_group" {
-  type = string
+  description = "The Log group that the service will write to"
+  type        = string
 }
