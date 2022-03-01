@@ -17,6 +17,7 @@ variable "container" {
     health_path = string
     count       = number
     environment = list(map(string))
+    commands    = list(string)
   })
 }
 
