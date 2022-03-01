@@ -50,6 +50,7 @@ resource "aws_ecs_task_definition" "main" {
           awslogs-stream-prefix = var.service
         }
       }
+      command = var.container.commands
     }
   ])
 }
