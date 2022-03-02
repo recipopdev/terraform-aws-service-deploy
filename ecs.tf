@@ -47,7 +47,7 @@ resource "aws_ecs_task_definition" "main" {
           hostPort      = var.network.port
         }
       ]
-      environment = var.create_secret ? concat(var.container.environment, [{name="${upper(var.service)}_SECRET",value=aws_secretsmanager_secret.main.name}]) : var.container.environment
+      environment = var.create_secret ? concat(var.container.environment, [{name="${upper(var.service)}_SECRET",value=aws_secretsmanager_secret.main[0].name}]) : var.container.environment
       logConfiguration = {
         logDriver = "awslogs"
         options = {
