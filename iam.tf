@@ -58,7 +58,7 @@ resource "aws_iam_role_policy" "main_read_secrets" {
   count  = var.create_secret ? 1 : 0
   name   = "${var.service}-read-secrets"
   role   = aws_iam_role.main.id
-  policy = data.aws_iam_policy_document.main_read_secrets.json
+  policy = data.aws_iam_policy_document.main_read_secrets[0].json
 }
 
 data "aws_iam_policy_document" "main_read_secrets" {
