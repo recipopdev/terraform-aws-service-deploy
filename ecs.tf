@@ -1,5 +1,11 @@
 data "aws_region" "current" {}
 
+resource "aws_secretsmanager_secret" "main" {
+  count                   = var.create_secret ? 1 : 0
+  name                    = "/ecs/fargate/${var.service}"
+  recovery_window_in_days = 0
+}
+
 resource "aws_ecs_service" "main" {
   name                 = var.service
   cluster              = var.cluster
