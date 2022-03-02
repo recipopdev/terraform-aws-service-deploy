@@ -22,7 +22,6 @@ resource "aws_iam_role_policy" "main_pull_image" {
   policy = data.aws_iam_policy_document.main_pull_image.json
 }
 
-
 data "aws_iam_policy_document" "main_pull_image" {
   statement {
     actions = [
@@ -51,6 +50,34 @@ data "aws_iam_policy_document" "main_pull_image" {
     ]
     resources = [
       "*"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "main_read_secrets" {
+  count  = var.create_secret ? 1 : 0
+  name   = "${var.service}-read-secrets"
+  role   = aws_iam_role.main.id
+  policy = data.aws_iam_policy_document.main_read_secrets.json
+}
+
+data "aws_iam_policy_document" "main_read_secrets" {
+  count = var.create_secret ? 1 : 0
+  statement {
+    actions = [
+      "secretsmanager:ListSecrets"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+  statement {
+    actions = [
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret"
+    ]
+    resources = [
+      aws_secretsmanager_secret.main[0].arn
     ]
   }
 }

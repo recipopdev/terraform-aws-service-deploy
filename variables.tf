@@ -21,6 +21,16 @@ variable "container" {
   })
 }
 
+variable "rds" {
+  description = "The security groups that belong to the RDS cluster"
+  type        = object({
+    security_groups = list(string)
+  })
+  default = {
+    security_groups = []
+  }
+}
+
 variable "loadbalancer" {
   description = "The loadbalancer the service will be attached to"
   type        = object({
@@ -42,4 +52,10 @@ variable "network" {
 variable "log_group" {
   description = "The Log group that the service will write to"
   type        = string
+}
+
+variable "create_secret" {
+  description = "Whether to create a secret and attach permissions to read it"
+  type        = bool
+  default     = false
 }
