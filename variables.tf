@@ -65,3 +65,7 @@ variable "create_bucket" {
   type        = bool
   default     = false
 }
+
+locals {
+  environment = terraform.workspace == "default" ? "dev" : terraform.workspace
+}
