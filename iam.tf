@@ -81,3 +81,30 @@ data "aws_iam_policy_document" "main_read_secrets" {
     ]
   }
 }
+
+resource "aws_iam_role_policy" "main_pull_s3" {
+  count  = var.create_bucket ? 1 : 0
+  name   = "${var.service}-pull-s3"
+  role   = aws_iam_role.main.id
+  policy = data.aws_iam_policy_document.main_pull_s3[0].json
+}
+
+data "aws_iam_policy_document" "main_pull_s3" {
+  count = var.create_bucket ? 1 : 0
+  statement {
+    actions = [
+      "s3:ListBucket"
+    ]
+    resources = [
+      aws_s3_bucket.main[0].arn
+    ]
+  }
+  statement {
+    actions = [
+      "s3:GetObject"
+    ]
+    resources = [
+      "${aws_s3_bucket.main[0].arn}/*",
+    ]
+  }
+}

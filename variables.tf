@@ -59,3 +59,9 @@ variable "create_secret" {
   type        = bool
   default     = false
 }
+
+variable "create_bucket" {
+  description = "Whether to create a bucket and attach permissions to read it"
+  type        = bool
+  default     = false
+}
