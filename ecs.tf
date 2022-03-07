@@ -47,7 +47,12 @@ resource "aws_ecs_task_definition" "main" {
           hostPort      = var.network.port
         }
       ]
-      environment = var.create_secret ? concat(var.container.environment, [{name="${upper(var.service)}_SECRET",value=aws_secretsmanager_secret.main[0].name}]) : var.container.environment
+      environment = concat(
+        var.create_secret ? [{name="${upper(var.service)}_SECRET",value=aws_secretsmanager_secret.main[0].name}] : [],
+        var.create_bucket ? [{name="${upper(var.service)}_MODEL_S3_BUCKET",value=aws_s3_bucket.main[0].bucket}, {name="${upper(var.service)}_MODEL_S3_PREFIX",value=" "}] : [],
+        var.container.environment
+      )
+
       logConfiguration = {
         logDriver = "awslogs"
         options = {
