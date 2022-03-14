@@ -65,7 +65,7 @@ resource "aws_ecs_task_definition" "main" {
     }
   ])
   runtime_platform {
-    operating_system_family = var.windows_deployment ? "WINDOWS_SERVER_2022_CORE" : "LINUX"
+    operating_system_family = var.windows_deployment ? "WINDOWS_SERVER_2019_CORE" : "LINUX"
     cpu_architecture        = "X86_64"
   } 
 }
