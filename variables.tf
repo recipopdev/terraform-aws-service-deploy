@@ -66,6 +66,12 @@ variable "create_bucket" {
   default     = false
 }
 
+variable "windows_deployment" {
+  description = "Whether to create a windows deployment"
+  type        = bool
+  default     = false
+}
+
 locals {
   environment = terraform.workspace == "default" ? "dev" : terraform.workspace
 }
