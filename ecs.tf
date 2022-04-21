@@ -73,7 +73,7 @@ data "template_file" "main_container" {
     image     = var.container.image
     cpu       = var.container.cpu
     memory    = var.container.memory
-    port      = jsonencode([var.network.port])
+    ports     = jsonencode([var.network.port])
     log_group = var.log_group
     commands  = jsonencode(var.container.commands)
 
