@@ -30,12 +30,12 @@ resource "aws_ecs_task_definition" "main" {
   family                   = var.service
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = (var.container.cpu + (var.service_discovery ? 128 : 0))
-  memory                   = (var.container.memory + (var.service_discovery ? 256 : 0))
+  cpu                      = (var.container.cpu + (var.service_discovery.enabled ? 128 : 0))
+  memory                   = (var.container.memory + (var.service_discovery.enabled ? 256 : 0))
   execution_role_arn       = aws_iam_role.main.arn
   task_role_arn            = aws_iam_role.main.arn
   container_definitions    = concat(
-    var.service_discovery ? [data.template_file.service_discovery_container.rendered] : [],
+    var.service_discovery.enabled ? [data.template_file.service_discovery_container.rendered] : [],
     [data.template_file.main_container.rendered]
   )
   runtime_platform {
