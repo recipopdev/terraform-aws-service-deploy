@@ -66,6 +66,12 @@ variable "create_bucket" {
   default     = false
 }
 
+variable "service_discovery" {
+  description = "Enable service discovery on the deployment"
+  type        = bool
+  default     = false
+}
+
 variable "windows_deployment" {
   description = "Whether to create a windows deployment"
   type        = bool
