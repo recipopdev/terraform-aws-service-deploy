@@ -27,8 +27,8 @@ locals {
       service   = var.service
       region    = data.aws_region.current.name
       image     = var.container.image
-      cpu       = var.container.cpu
-      memory    = var.container.memory
+      cpu       = var.service_discovery.enabled ? var.container.cpu - 128 : var.container.cpu
+      memory    = var.service_discovery.enabled ? var.container.memory - 256 : var.container.memory
       ports     = jsonencode([var.network.port])
       log_group = var.log_group
       commands  = jsonencode(var.container.commands)
