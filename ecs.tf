@@ -34,52 +34,9 @@ resource "aws_ecs_task_definition" "main" {
   memory                   = (var.container.memory + (var.service_discovery.enabled ? 256 : 0))
   execution_role_arn       = aws_iam_role.main.arn
   task_role_arn            = aws_iam_role.main.arn
-  container_definitions    = "[ ${var.service_discovery.enabled ? join("", [data.template_file.service_discovery_container.rendered, ","]) : ""} ${data.template_file.main_container.rendered} ]"
+  container_definitions    = "[ ${var.service_discovery.enabled ? join("", [local.service_discovery_definition, ","]) : ""} ${local.main_definition} ]"
   runtime_platform {
     operating_system_family = var.windows_deployment ? "WINDOWS_SERVER_2019_CORE" : "LINUX"
     cpu_architecture        = "X86_64"
   } 
-}
-
-
-
-data "template_file" "service_discovery_container" {
-  template = file("${path.module}/container_definition.tpl")
-  vars = {
-    service   = var.service_discovery.name
-    region    = data.aws_region.current.name
-    image     = var.service_discovery.image
-    cpu       = 128
-    memory    = 256
-    ports     = jsonencode([])
-    log_group = var.log_group
-    commands  = jsonencode([])
-
-    environment = jsonencode([
-      {
-        name = "SERVICE_DISCOVERY_DIRECTORY",
-        value = "/ecs"
-      }
-    ])
-  }
-}
-
-data "template_file" "main_container" {
-  template = file("${path.module}/container_definition.tpl")
-  vars = {
-    service   = var.service
-    region    = data.aws_region.current.name
-    image     = var.container.image
-    cpu       = var.container.cpu
-    memory    = var.container.memory
-    ports     = jsonencode([var.network.port])
-    log_group = var.log_group
-    commands  = jsonencode(var.container.commands)
-
-    environment = jsonencode(concat(
-      var.create_secret ? [{name="${upper(var.service)}_SECRET",value=aws_secretsmanager_secret.main[0].name}] : [],
-      var.create_bucket ? [{name="${upper(var.service)}_S3_BUCKET",value=aws_s3_bucket.main[0].bucket}, {name="${upper(var.service)}_S3_PREFIX",value=" "}] : [],
-      var.container.environment
-    ))
-  }
 }
