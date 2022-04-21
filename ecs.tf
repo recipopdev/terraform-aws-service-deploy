@@ -34,10 +34,10 @@ resource "aws_ecs_task_definition" "main" {
   memory                   = (var.container.memory + (var.service_discovery.enabled ? 256 : 0))
   execution_role_arn       = aws_iam_role.main.arn
   task_role_arn            = aws_iam_role.main.arn
-  container_definitions    = concat(
+  container_definitions    = jsonencode(concat(
     var.service_discovery.enabled ? [data.template_file.service_discovery_container.rendered] : [],
     [data.template_file.main_container.rendered]
-  )
+  ))
   runtime_platform {
     operating_system_family = var.windows_deployment ? "WINDOWS_SERVER_2019_CORE" : "LINUX"
     cpu_architecture        = "X86_64"
