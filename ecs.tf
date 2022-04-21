@@ -47,14 +47,14 @@ resource "aws_ecs_task_definition" "main" {
 data "template_file" "service_discovery_container" {
   template = file("${path.module}/container_definition.tpl")
   vars = {
-    service   = var.service
+    service   = var.service_discovery.name
     region    = data.aws_region.current.name
-    image     = var.container.image
+    image     = var.service_discovery.image
     cpu       = 128
     memory    = 256
     ports     = jsonencode([])
     log_group = var.log_group
-    commands  = var.container.commands
+    commands  = []
 
     environment = [
       {

@@ -67,9 +67,17 @@ variable "create_bucket" {
 }
 
 variable "service_discovery" {
-  description = "Enable service discovery on the deployment"
-  type        = bool
-  default     = false
+  description = "Whether to enable service discovery of tasks"
+  type        = object({
+    enabled = bool
+    name    = string
+    image   = string
+  })
+  default = {
+    enabled = false
+    name    = ""
+    image   = ""
+  }
 }
 
 variable "windows_deployment" {
