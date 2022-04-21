@@ -54,14 +54,14 @@ data "template_file" "service_discovery_container" {
     memory    = 256
     ports     = jsonencode([])
     log_group = var.log_group
-    commands  = []
+    commands  = jsonencode([])
 
-    environment = [
+    environment = jsonencode([
       {
         name = "SERVICE_DISCOVERY_DIRECTORY",
         value = "/ecs"
       }
-    ]
+    ])
   }
 }
 
@@ -75,12 +75,12 @@ data "template_file" "main_container" {
     memory    = var.container.memory
     port      = jsonencode([var.network.port])
     log_group = var.log_group
-    commands  = var.container.commands
+    commands  = jsonencode(var.container.commands)
 
-    environment = concat(
+    environment = jsonencode(concat(
       var.create_secret ? [{name="${upper(var.service)}_SECRET",value=aws_secretsmanager_secret.main[0].name}] : [],
       var.create_bucket ? [{name="${upper(var.service)}_S3_BUCKET",value=aws_s3_bucket.main[0].bucket}, {name="${upper(var.service)}_S3_PREFIX",value=" "}] : [],
       var.container.environment
-    )
+    ))
   }
 }
