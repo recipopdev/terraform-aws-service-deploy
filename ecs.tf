@@ -13,6 +13,7 @@ resource "aws_ecs_service" "main" {
   launch_type          = "FARGATE"
   desired_count        = var.container.count
   force_new_deployment = true
+  skip_destroy         = true
 
   network_configuration {
     security_groups = [aws_security_group.main.id]
