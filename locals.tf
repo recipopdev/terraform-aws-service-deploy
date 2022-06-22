@@ -1,7 +1,7 @@
 locals {
 
   service_discovery_definition = templatefile(
-    "${path.module}/container_definition.tpl", 
+    "${path.module}/container_definition.tpl",
     {
       service   = var.service_discovery.name
       region    = data.aws_region.current.name
@@ -14,7 +14,7 @@ locals {
 
       environment = jsonencode([
         {
-          name = "SERVICE_DISCOVERY_DIRECTORY",
+          name  = "SERVICE_DISCOVERY_DIRECTORY",
           value = "/ecs"
         }
       ])
@@ -22,7 +22,7 @@ locals {
   )
 
   main_definition = templatefile(
-    "${path.module}/container_definition.tpl", 
+    "${path.module}/container_definition.tpl",
     {
       service   = var.service
       region    = data.aws_region.current.name
@@ -34,8 +34,8 @@ locals {
       commands  = jsonencode(var.container.commands)
 
       environment = jsonencode(concat(
-        var.create_secret ? [{name="${upper(var.service)}_SECRET",value=aws_secretsmanager_secret.main[0].name}] : [],
-        var.create_bucket ? [{name="${upper(var.service)}_S3_BUCKET",value=aws_s3_bucket.main[0].bucket}, {name="${upper(var.service)}_S3_PREFIX",value=" "}] : [],
+        var.create_secret ? [{ name = "${upper(var.service)}_SECRET", value = aws_secretsmanager_secret.main[0].name }] : [],
+        var.create_bucket ? [{ name = "${upper(var.service)}_S3_BUCKET", value = aws_s3_bucket.main[0].bucket }, { name = "${upper(var.service)}_S3_PREFIX", value = " " }] : [],
         var.container.environment
       ))
     }

@@ -10,7 +10,7 @@ variable "cluster" {
 
 variable "container" {
   description = "The details of the container that is being deployed"
-  type        = object({
+  type = object({
     cpu         = number
     memory      = number
     image       = string
@@ -23,7 +23,7 @@ variable "container" {
 
 variable "rds" {
   description = "The security groups that belong to the RDS cluster"
-  type        = object({
+  type = object({
     security_groups = list(string)
   })
   default = {
@@ -33,7 +33,7 @@ variable "rds" {
 
 variable "loadbalancer" {
   description = "The loadbalancer the service will be attached to"
-  type        = object({
+  type = object({
     listener       = string
     security_group = string
     dns            = string
@@ -42,7 +42,7 @@ variable "loadbalancer" {
 
 variable "network" {
   description = "The network details for the swervice that is being deployed"
-  type        = object({
+  type = object({
     vpc     = string
     subnets = list(string)
     port    = number
@@ -68,7 +68,7 @@ variable "create_bucket" {
 
 variable "service_discovery" {
   description = "Whether to enable service discovery of tasks"
-  type        = object({
+  type = object({
     enabled = bool
     name    = string
     image   = string
@@ -84,6 +84,50 @@ variable "windows_deployment" {
   description = "Whether to create a windows deployment"
   type        = bool
   default     = false
+}
+
+variable "scaling" {
+  description = "Whether to enable scaling and the settings to apply if it is"
+  type = object({
+    enabled = bool
+    service = string
+    scale_up = object({
+      bound = number
+      cpu = object({
+        evaluation_period = string
+        period            = string
+        threshold         = string
+      })
+    })
+    scale_down = object({
+      bound = number
+      cpu = object({
+        evaluation_period = string
+        period            = string
+        threshold         = string
+      })
+    })
+  })
+  default = {
+    enabled = false
+    service = ""
+    scale_up = {
+      bound = 0
+      cpu = {
+        evaluation_period = ""
+        period            = ""
+        threshold         = ""
+      }
+    }
+    scale_down = {
+      bound = 0
+      cpu = {
+        evaluation_period = ""
+        period            = ""
+        threshold         = ""
+      }
+    }
+  }
 }
 
 locals {
