@@ -13,7 +13,6 @@ resource "aws_ecs_service" "main" {
   launch_type          = "FARGATE"
   desired_count        = var.container.count
   force_new_deployment = true
-  skip_destroy         = true
 
   network_configuration {
     security_groups = [aws_security_group.main.id]
@@ -36,6 +35,7 @@ resource "aws_ecs_task_definition" "main" {
   execution_role_arn       = aws_iam_role.main.arn
   task_role_arn            = aws_iam_role.main.arn
   container_definitions    = var.service_discovery.enabled ? "[${local.main_definition}, ${local.service_discovery_definition}]" : "[${local.main_definition}]"
+  skip_destroy             = true
   runtime_platform {
     operating_system_family = var.windows_deployment ? "WINDOWS_SERVER_2019_CORE" : "LINUX"
     cpu_architecture        = "X86_64"
