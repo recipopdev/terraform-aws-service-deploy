@@ -3,6 +3,7 @@
   "image": "${image}",
   "memory": ${memory},
   "name": "${service}",
+  "essential": true,
   "portMappings": ${jsonencode([
     for port in jsondecode(ports) : {
       containerPort = port,
@@ -18,6 +19,6 @@
       "awslogs-stream-prefix": "${service}"
     }
   },
-  "environment": "${environment}",
-  "command": "${commands}"
+  "environment": ${environment},
+  "command": ${commands}
 }

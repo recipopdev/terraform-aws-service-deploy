@@ -108,3 +108,23 @@ data "aws_iam_policy_document" "main_pull_s3" {
     ]
   }
 }
+
+resource "aws_iam_role_policy" "ecs_service_discovery" {
+  count  = var.service_discovery.enabled ? 1 : 0
+  name   = "${var.service}-service-discovery"
+  role   = aws_iam_role.main.id
+  policy = data.aws_iam_policy_document.ecs_service_discovery[0].json
+}
+
+data "aws_iam_policy_document" "ecs_service_discovery" {
+  count = var.service_discovery.enabled ? 1 : 0
+  statement {
+    actions = [
+      "ecs:List*",
+      "ecs:Describe*"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+}
