@@ -20,6 +20,7 @@ variable "container" {
     health_check = object({
       path        = string
       status_code = string
+      timeout     = string
     })
   })
 }
