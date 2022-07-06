@@ -7,8 +7,8 @@ resource "aws_lb_target_group" "main" {
 
   health_check {
     port    = var.network.port
-    path    = var.container.health_path
-    matcher = "200"
+    path    = var.container.health_check.path
+    matcher = var.container.health_check.status_code
   }
 
   stickiness {
