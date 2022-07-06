@@ -9,6 +9,7 @@ resource "aws_lb_target_group" "main" {
     port    = var.network.port
     path    = var.container.health_check.path
     matcher = var.container.health_check.status_code
+    timeout = var.container.health_check.timeout
   }
 
   stickiness {
