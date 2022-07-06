@@ -11,13 +11,16 @@ variable "cluster" {
 variable "container" {
   description = "The details of the container that is being deployed"
   type = object({
-    cpu         = number
-    memory      = number
-    image       = string
-    health_path = string
-    count       = number
-    environment = list(map(string))
-    commands    = list(string)
+    cpu          = number
+    memory       = number
+    image        = string
+    count        = number
+    environment  = list(map(string))
+    commands     = list(string)
+    health_check = object({
+      path        = string
+      status_code = string
+    })
   })
 }
 
