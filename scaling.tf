@@ -32,6 +32,40 @@ resource "aws_cloudwatch_metric_alarm" "cpu_low" {
   alarm_actions = [aws_appautoscaling_policy.scale_down_policy[0].arn]
 }
 
+resource "aws_cloudwatch_metric_alarm" "memory_high" {
+  count               = var.scaling.enabled ? 1 : 0
+  alarm_name          = "${var.service}-memory-high"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = var.scaling.scale_up.memory.evaluation_period
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/ECS"
+  period              = var.scaling.scale_up.memory.period
+  statistic           = "Average"
+  threshold           = var.scaling.scale_up.memory.threshold
+  dimensions = {
+    ClusterName = var.cluster
+    ServiceName = var.service
+  }
+  alarm_actions = [aws_appautoscaling_policy.scale_up_policy[0].arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "memory_low" {
+  count               = var.scaling.enabled ? 1 : 0
+  alarm_name          = "${var.service}-memory-low"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = var.scaling.scale_down.memory.evaluation_period
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/ECS"
+  period              = var.scaling.scale_down.memory.period
+  statistic           = "Average"
+  threshold           = var.scaling.scale_down.memory.threshold
+  dimensions = {
+    ClusterName = var.cluster
+    ServiceName = var.service
+  }
+  alarm_actions = [aws_appautoscaling_policy.scale_down_policy[0].arn]
+}
+
 resource "aws_appautoscaling_policy" "scale_up_policy" {
   count              = var.scaling.enabled ? 1 : 0
   name               = "${var.service}-scale-up-policy"
