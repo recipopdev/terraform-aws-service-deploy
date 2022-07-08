@@ -102,10 +102,20 @@ variable "scaling" {
         period            = string
         threshold         = string
       })
+      memory = object({
+        evaluation_period = string
+        period            = string
+        threshold         = string
+      })
     })
     scale_down = object({
       bound = number
       cpu = object({
+        evaluation_period = string
+        period            = string
+        threshold         = string
+      })
+      memory = object({
         evaluation_period = string
         period            = string
         threshold         = string
@@ -122,10 +132,20 @@ variable "scaling" {
         period            = ""
         threshold         = ""
       }
+      memory = {
+        evaluation_period = ""
+        period            = ""
+        threshold         = ""
+      }
     }
     scale_down = {
       bound = 0
       cpu = {
+        evaluation_period = ""
+        period            = ""
+        threshold         = ""
+      }
+      memory = {
         evaluation_period = ""
         period            = ""
         threshold         = ""
