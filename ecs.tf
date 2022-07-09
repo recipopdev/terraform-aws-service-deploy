@@ -24,6 +24,11 @@ resource "aws_ecs_service" "main" {
     container_name   = var.service
     container_port   = var.network.port
   }
+  
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
 }
 
 resource "aws_ecs_task_definition" "main" {
