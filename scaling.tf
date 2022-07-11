@@ -12,7 +12,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_high" {
     ClusterName = var.cluster
     ServiceName = var.service
   }
-  alarm_actions = [aws_appautoscaling_policy.scale_up_policy[0].arn]
+  alarm_actions = [aws_appautoscaling_policy.cpu_scale_up_policy[0].arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_low" {
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_low" {
     ClusterName = var.cluster
     ServiceName = var.service
   }
-  alarm_actions = [aws_appautoscaling_policy.scale_down_policy[0].arn]
+  alarm_actions = [aws_appautoscaling_policy.cpu_scale_down_policy[0].arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_high" {
@@ -46,7 +46,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_high" {
     ClusterName = var.cluster
     ServiceName = var.service
   }
-  alarm_actions = [aws_appautoscaling_policy.scale_up_policy[0].arn]
+  alarm_actions = [aws_appautoscaling_policy.memory_scale_up_policy[0].arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "memory_low" {
@@ -63,12 +63,12 @@ resource "aws_cloudwatch_metric_alarm" "memory_low" {
     ClusterName = var.cluster
     ServiceName = var.service
   }
-  alarm_actions = [aws_appautoscaling_policy.scale_down_policy[0].arn]
+  alarm_actions = [aws_appautoscaling_policy.memory_scale_down_policy[0].arn]
 }
 
-resource "aws_appautoscaling_policy" "scale_up_policy" {
+resource "aws_appautoscaling_policy" "cpu_scale_up_policy" {
   count              = var.scaling.enabled ? 1 : 0
-  name               = "${var.service}-scale-up-policy"
+  name               = "${var.service}-cpu-scale-up-policy"
   depends_on         = [aws_appautoscaling_target.scale_target[0]]
   service_namespace  = "ecs"
   resource_id        = "service/${var.cluster}/${var.service}"
@@ -84,9 +84,45 @@ resource "aws_appautoscaling_policy" "scale_up_policy" {
   }
 }
 
-resource "aws_appautoscaling_policy" "scale_down_policy" {
+resource "aws_appautoscaling_policy" "cpu_scale_down_policy" {
   count              = var.scaling.enabled ? 1 : 0
-  name               = "${var.service}-scale-down-policy"
+  name               = "${var.service}-cpu-scale-down-policy"
+  depends_on         = [aws_appautoscaling_target.scale_target[0]]
+  service_namespace  = "ecs"
+  resource_id        = "service/${var.cluster}/${var.service}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 60
+    metric_aggregation_type = "Maximum"
+    step_adjustment {
+      metric_interval_upper_bound = 0
+      scaling_adjustment          = -1
+    }
+  }
+}
+
+resource "aws_appautoscaling_policy" "memory_scale_up_policy" {
+  count              = var.scaling.enabled ? 1 : 0
+  name               = "${var.service}-memory-scale-up-policy"
+  depends_on         = [aws_appautoscaling_target.scale_target[0]]
+  service_namespace  = "ecs"
+  resource_id        = "service/${var.cluster}/${var.service}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 60
+    metric_aggregation_type = "Maximum"
+    step_adjustment {
+      metric_interval_lower_bound = 0
+      scaling_adjustment          = 1
+    }
+  }
+}
+
+resource "aws_appautoscaling_policy" "memory_scale_down_policy" {
+  count              = var.scaling.enabled ? 1 : 0
+  name               = "${var.service}-memory-scale-down-policy"
   depends_on         = [aws_appautoscaling_target.scale_target[0]]
   service_namespace  = "ecs"
   resource_id        = "service/${var.cluster}/${var.service}"
