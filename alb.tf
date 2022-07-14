@@ -28,7 +28,7 @@ resource "aws_lb_listener_rule" "main" {
 
   condition {
     host_header {
-      values = [var.loadbalancer.dns]
+      values = var.loadbalancer.dns
     }
   }
 }
