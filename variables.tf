@@ -40,7 +40,7 @@ variable "loadbalancer" {
   type = object({
     listener       = string
     security_group = string
-    dns            = string
+    dns            = list(string)
   })
 }
 
