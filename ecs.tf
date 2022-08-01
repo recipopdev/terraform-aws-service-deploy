@@ -7,12 +7,13 @@ resource "aws_secretsmanager_secret" "main" {
 }
 
 resource "aws_ecs_service" "main" {
-  name                 = var.service
-  cluster              = var.cluster
-  task_definition      = aws_ecs_task_definition.main.arn
-  launch_type          = "FARGATE"
-  desired_count        = var.container.count
-  force_new_deployment = true
+  name                              = var.service
+  cluster                           = var.cluster
+  task_definition                   = aws_ecs_task_definition.main.arn
+  launch_type                       = "FARGATE"
+  desired_count                     = var.container.count
+  force_new_deployment              = true
+  health_check_grace_period_seconds = var.container.health_check.grace_period
 
   network_configuration {
     security_groups = [aws_security_group.main.id]

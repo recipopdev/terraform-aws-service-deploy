@@ -18,9 +18,10 @@ variable "container" {
     environment  = list(map(string))
     commands     = list(string)
     health_check = object({
-      path        = string
-      status_code = string
-      timeout     = string
+      path         = string
+      status_code  = string
+      timeout      = string
+      grace_period = string
     })
   })
 }
