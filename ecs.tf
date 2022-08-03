@@ -30,6 +30,12 @@ resource "aws_ecs_service" "main" {
     enable   = true
     rollback = true
   }
+  
+  lifecycle {
+    ignore_changes = [
+      desired_count
+    ]
+  }
 }
 
 resource "aws_ecs_task_definition" "main" {
