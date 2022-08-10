@@ -6,7 +6,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_high" {
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
   period              = var.scaling.scale_up.cpu.period
-  statistic           = "Maximum"
+  statistic           = "Average"
   threshold           = var.scaling.scale_up.cpu.threshold
   dimensions = {
     ClusterName = var.cluster
@@ -75,8 +75,8 @@ resource "aws_appautoscaling_policy" "cpu_scale_up_policy" {
   scalable_dimension = "ecs:service:DesiredCount"
   step_scaling_policy_configuration {
     adjustment_type         = "ChangeInCapacity"
-    cooldown                = 60
-    metric_aggregation_type = "Maximum"
+    cooldown                = var.scaling.scale_up.cpu.cooldown
+    metric_aggregation_type = "Average"
     step_adjustment {
       metric_interval_lower_bound = 0
       scaling_adjustment          = 1
@@ -93,8 +93,8 @@ resource "aws_appautoscaling_policy" "cpu_scale_down_policy" {
   scalable_dimension = "ecs:service:DesiredCount"
   step_scaling_policy_configuration {
     adjustment_type         = "ChangeInCapacity"
-    cooldown                = 60
-    metric_aggregation_type = "Maximum"
+    cooldown                = var.scaling.scale_down.cpu.cooldown
+    metric_aggregation_type = "Average"
     step_adjustment {
       metric_interval_upper_bound = 0
       scaling_adjustment          = -1
@@ -111,8 +111,8 @@ resource "aws_appautoscaling_policy" "memory_scale_up_policy" {
   scalable_dimension = "ecs:service:DesiredCount"
   step_scaling_policy_configuration {
     adjustment_type         = "ChangeInCapacity"
-    cooldown                = 60
-    metric_aggregation_type = "Maximum"
+    cooldown                = var.scaling.scale_up.memory.cooldown
+    metric_aggregation_type = "Average"
     step_adjustment {
       metric_interval_lower_bound = 0
       scaling_adjustment          = 1
@@ -129,8 +129,8 @@ resource "aws_appautoscaling_policy" "memory_scale_down_policy" {
   scalable_dimension = "ecs:service:DesiredCount"
   step_scaling_policy_configuration {
     adjustment_type         = "ChangeInCapacity"
-    cooldown                = 60
-    metric_aggregation_type = "Maximum"
+    cooldown                = var.scaling.scale_down.memory.cooldown
+    metric_aggregation_type = "Average"
     step_adjustment {
       metric_interval_upper_bound = 0
       scaling_adjustment          = -1
