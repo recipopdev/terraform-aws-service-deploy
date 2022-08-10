@@ -136,11 +136,13 @@ variable "scaling" {
         evaluation_period = ""
         period            = ""
         threshold         = ""
+        cooldown          = ""
       }
       memory = {
         evaluation_period = ""
         period            = ""
         threshold         = ""
+        cooldown          = ""
       }
     }
     scale_down = {
@@ -149,11 +151,13 @@ variable "scaling" {
         evaluation_period = ""
         period            = ""
         threshold         = ""
+        cooldown          = ""
       }
       memory = {
         evaluation_period = ""
         period            = ""
         threshold         = ""
+        cooldown          = ""
       }
     }
   }
