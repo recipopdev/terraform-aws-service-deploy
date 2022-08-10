@@ -102,11 +102,13 @@ variable "scaling" {
         evaluation_period = string
         period            = string
         threshold         = string
+        cooldown          = string
       })
       memory = object({
         evaluation_period = string
         period            = string
         threshold         = string
+        cooldown          = string
       })
     })
     scale_down = object({
@@ -115,11 +117,13 @@ variable "scaling" {
         evaluation_period = string
         period            = string
         threshold         = string
+        cooldown          = string
       })
       memory = object({
         evaluation_period = string
         period            = string
         threshold         = string
+        cooldown          = string
       })
     })
   })
