@@ -95,69 +95,51 @@ variable "scaling" {
   description = "Whether to enable scaling and the settings to apply if it is"
   type = object({
     enabled = bool
-    service = string
-    scale_up = object({
-      bound = number
-      cpu = object({
-        evaluation_period = string
-        period            = string
-        threshold         = string
-        cooldown          = string
+    cpu = object({
+      threshold = number
+      scale_in = object({
+        bound    = number
+        cooldown = number
       })
-      memory = object({
-        evaluation_period = string
-        period            = string
-        threshold         = string
-        cooldown          = string
+      scale_out = object({
+        bound    = number
+        cooldown = number
       })
     })
-    scale_down = object({
-      bound = number
-      cpu = object({
-        evaluation_period = string
-        period            = string
-        threshold         = string
-        cooldown          = string
+    memory = object({
+      threshold = number
+      scale_in = object({
+        bound    = number
+        cooldown = number
       })
-      memory = object({
-        evaluation_period = string
-        period            = string
-        threshold         = string
-        cooldown          = string
+      scale_out = object({
+        bound    = number
+        cooldown = number
       })
     })
   })
   default = {
     enabled = false
-    service = ""
-    scale_up = {
-      bound = 0
-      cpu = {
-        evaluation_period = ""
-        period            = ""
-        threshold         = ""
-        cooldown          = ""
+    cpu = {
+      threshold = 0
+      scale_in = {
+        bound    = 0
+        cooldown = 0
       }
-      memory = {
-        evaluation_period = ""
-        period            = ""
-        threshold         = ""
-        cooldown          = ""
+      scale_out = {
+        bound    = 0
+        cooldown = 0
       }
     }
-    scale_down = {
-      bound = 0
-      cpu = {
-        evaluation_period = ""
-        period            = ""
-        threshold         = ""
-        cooldown          = ""
+    memory = {
+      threshold          = 0
+      scale_in = {
+        bound    = 0
+        cooldown = 0
       }
-      memory = {
-        evaluation_period = ""
-        period            = ""
-        threshold         = ""
-        cooldown          = ""
+      scale_out = {
+        bound    = 0
+        cooldown = 0
       }
     }
   }
