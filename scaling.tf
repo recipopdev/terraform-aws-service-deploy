@@ -2,9 +2,9 @@ resource "aws_appautoscaling_policy" "cpu_policy" {
   count              = var.scaling.enabled ? 1 : 0
   name               = "${var.service}-cpu-policy"
   depends_on         = [aws_appautoscaling_target.scale_target[0]]
-  service_namespace  = aws_appautoscaling_target.scale_target.service_namespace
-  resource_id        = aws_appautoscaling_target.scale_target.resource_id
-  scalable_dimension = aws_appautoscaling_target.scale_target.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.scale_target[0].service_namespace
+  resource_id        = aws_appautoscaling_target.scale_target[0].resource_id
+  scalable_dimension = aws_appautoscaling_target.scale_target[0].scalable_dimension
   policy_type        = "TargetTrackingScaling"
   target_tracking_scaling_policy_configuration {
     predefined_metric_specification {
@@ -20,9 +20,9 @@ resource "aws_appautoscaling_policy" "memory_policy" {
   count              = var.scaling.enabled ? 1 : 0
   name               = "${var.service}-memory-policy"
   depends_on         = [aws_appautoscaling_target.scale_target[0]]
-  service_namespace  = aws_appautoscaling_target.scale_target.service_namespace
-  resource_id        = aws_appautoscaling_target.scale_target.resource_id
-  scalable_dimension = aws_appautoscaling_target.scale_target.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.scale_target[0].service_namespace
+  resource_id        = aws_appautoscaling_target.scale_target[0].resource_id
+  scalable_dimension = aws_appautoscaling_target.scale_target[0].scalable_dimension
   policy_type        = "TargetTrackingScaling"
   target_tracking_scaling_policy_configuration {
     predefined_metric_specification {
