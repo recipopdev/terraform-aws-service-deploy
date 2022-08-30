@@ -98,8 +98,8 @@ variable "scaling" {
     minimum = number
     maximum = number
     cpu = object({
-      threshold = number
-      scale_in_cooldown = number
+      threshold          = number
+      scale_in_cooldown  = number
       scale_out_cooldown = number
     })
     memory = object({
