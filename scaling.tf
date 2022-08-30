@@ -11,8 +11,8 @@ resource "aws_appautoscaling_policy" "cpu_policy" {
       predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
     target_value       = var.scaling.cpu.threshold
-    scale_in_cooldown  = var.scaling.scale_down.cpu.cooldown
-    scale_out_cooldown = var.scaling.scale_up.cpu.cooldown
+    scale_in_cooldown  = var.scaling.cpu.scale_in_cooldown
+    scale_out_cooldown = var.scaling.cpu.scale_out_cooldown
   }
 }
 
@@ -29,8 +29,8 @@ resource "aws_appautoscaling_policy" "memory_policy" {
       predefined_metric_type = "ECSServiceAverageMemoryUtilization"
     }
     target_value       = var.scaling.memory.threshold
-    scale_in_cooldown  = var.scaling.scale_down.memory.cooldown
-    scale_out_cooldown = var.scaling.scale_up.memory.cooldown
+    scale_in_cooldown  = var.scaling.memory.scale_in_cooldown
+    scale_out_cooldown = var.scaling.memory.scale_out_cooldown
   }
 }
 
