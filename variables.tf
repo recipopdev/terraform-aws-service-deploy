@@ -95,52 +95,32 @@ variable "scaling" {
   description = "Whether to enable scaling and the settings to apply if it is"
   type = object({
     enabled = bool
+    minimum = number
+    maximum = number
     cpu = object({
       threshold = number
-      scale_in = object({
-        bound    = number
-        cooldown = number
-      })
-      scale_out = object({
-        bound    = number
-        cooldown = number
-      })
+      scale_in_cooldown = number
+      scale_out_cooldown = number
     })
     memory = object({
-      threshold = number
-      scale_in = object({
-        bound    = number
-        cooldown = number
-      })
-      scale_out = object({
-        bound    = number
-        cooldown = number
-      })
+      threshold          = number
+      scale_in_cooldown  = number
+      scale_out_cooldown = number
     })
   })
   default = {
     enabled = false
+    minimum = 0
+    maximum = 0
     cpu = {
-      threshold = 0
-      scale_in = {
-        bound    = 0
-        cooldown = 0
-      }
-      scale_out = {
-        bound    = 0
-        cooldown = 0
-      }
+      threshold          = 0
+      scale_in_cooldown  = 0
+      scale_out_cooldown = 0
     }
     memory = {
       threshold          = 0
-      scale_in = {
-        bound    = 0
-        cooldown = 0
-      }
-      scale_out = {
-        bound    = 0
-        cooldown = 0
-      }
+      scale_in_cooldown  = 0
+      scale_out_cooldown = 0
     }
   }
 }
