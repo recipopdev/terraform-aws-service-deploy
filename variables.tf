@@ -95,70 +95,32 @@ variable "scaling" {
   description = "Whether to enable scaling and the settings to apply if it is"
   type = object({
     enabled = bool
-    service = string
-    scale_up = object({
-      bound = number
-      cpu = object({
-        evaluation_period = string
-        period            = string
-        threshold         = string
-        cooldown          = string
-      })
-      memory = object({
-        evaluation_period = string
-        period            = string
-        threshold         = string
-        cooldown          = string
-      })
+    minimum = number
+    maximum = number
+    cpu = object({
+      threshold          = number
+      scale_in_cooldown  = number
+      scale_out_cooldown = number
     })
-    scale_down = object({
-      bound = number
-      cpu = object({
-        evaluation_period = string
-        period            = string
-        threshold         = string
-        cooldown          = string
-      })
-      memory = object({
-        evaluation_period = string
-        period            = string
-        threshold         = string
-        cooldown          = string
-      })
+    memory = object({
+      threshold          = number
+      scale_in_cooldown  = number
+      scale_out_cooldown = number
     })
   })
   default = {
     enabled = false
-    service = ""
-    scale_up = {
-      bound = 0
-      cpu = {
-        evaluation_period = ""
-        period            = ""
-        threshold         = ""
-        cooldown          = ""
-      }
-      memory = {
-        evaluation_period = ""
-        period            = ""
-        threshold         = ""
-        cooldown          = ""
-      }
+    minimum = 0
+    maximum = 0
+    cpu = {
+      threshold          = 0
+      scale_in_cooldown  = 0
+      scale_out_cooldown = 0
     }
-    scale_down = {
-      bound = 0
-      cpu = {
-        evaluation_period = ""
-        period            = ""
-        threshold         = ""
-        cooldown          = ""
-      }
-      memory = {
-        evaluation_period = ""
-        period            = ""
-        threshold         = ""
-        cooldown          = ""
-      }
+    memory = {
+      threshold          = 0
+      scale_in_cooldown  = 0
+      scale_out_cooldown = 0
     }
   }
 }
