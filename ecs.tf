@@ -14,6 +14,7 @@ resource "aws_ecs_service" "main" {
   desired_count                     = var.container.count
   force_new_deployment              = true
   health_check_grace_period_seconds = var.container.health_check.grace_period
+  propagate_tags                    = "SERVICE"
 
   network_configuration {
     security_groups = [aws_security_group.main.id]
@@ -25,12 +26,12 @@ resource "aws_ecs_service" "main" {
     container_name   = var.service
     container_port   = var.network.port
   }
-  
+
   deployment_circuit_breaker {
     enable   = true
     rollback = true
   }
-  
+
   lifecycle {
     ignore_changes = [
       desired_count
