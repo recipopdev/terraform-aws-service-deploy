@@ -8,6 +8,12 @@ variable "cluster" {
   type        = string
 }
 
+variable "volume" {
+  description = "The name of the volume that is used"
+  type        = string
+  default     = ""
+}
+
 variable "container" {
   description = "The details of the container that is being deployed"
   type = object({
