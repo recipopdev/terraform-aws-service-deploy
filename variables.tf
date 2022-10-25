@@ -71,17 +71,21 @@ variable "create_bucket" {
   default     = false
 }
 
-variable "service_discovery" {
+variable "sidecar" {
   description = "Whether to enable service discovery of tasks"
   type = object({
-    enabled = bool
-    name    = string
-    image   = string
+    name        = string
+    image       = string
+    cpu         = number
+    memory      = number
+    environment = list(map(string))
   })
   default = {
-    enabled = false
-    name    = ""
-    image   = ""
+    name        = ""
+    image       = ""
+    cpu         = 0
+    memory      = 0
+    environment = [{}]
   }
 }
 

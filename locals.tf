@@ -1,23 +1,18 @@
 locals {
 
-  service_discovery_definition = templatefile(
+  sidecar_definition = templatefile(
     "${path.module}/container_definition.tpl",
     {
-      service   = var.service_discovery.name
+      service   = var.sidecar.name
       region    = data.aws_region.current.name
-      image     = var.service_discovery.image
-      cpu       = 128
-      memory    = 256
+      image     = var.sidecar.image
+      cpu       = var.sidecar.cpu
+      memory    = var.sidecar.memory
       ports     = jsonencode([])
       log_group = var.log_group
       commands  = jsonencode([])
 
-      environment = jsonencode([
-        {
-          name  = "SERVICE_DISCOVERY_DIRECTORY",
-          value = "/ecs"
-        }
-      ])
+      environment = jsonencode(var.container.environment)
     }
   )
 
@@ -27,8 +22,8 @@ locals {
       service   = var.service
       region    = data.aws_region.current.name
       image     = var.container.image
-      cpu       = var.service_discovery.enabled ? var.container.cpu - 128 : var.container.cpu
-      memory    = var.service_discovery.enabled ? var.container.memory - 256 : var.container.memory
+      cpu       = var.sidecar.image != "" ? var.container.cpu - var.sidecar.cpu : var.container.cpu
+      memory    = var.sidecar.image != "" ? var.container.memory - var.sidecar.memory : var.container.memory
       ports     = jsonencode([var.network.port])
       log_group = var.log_group
       commands  = jsonencode(var.container.commands)
