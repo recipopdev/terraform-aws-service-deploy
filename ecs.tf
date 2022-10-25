@@ -9,7 +9,7 @@ resource "aws_secretsmanager_secret" "main" {
 resource "aws_ecs_service" "main" {
   name                              = var.service
   cluster                           = var.cluster
-  task_definition                   = aws_ecs_task_definition.main.arn
+  task_definition                   = var.volume == "" ? aws_ecs_task_definition.main.arn : aws_ecs_task_definition.main_volume.arn
   launch_type                       = "FARGATE"
   desired_count                     = var.container.count
   force_new_deployment              = true
@@ -39,7 +39,28 @@ resource "aws_ecs_service" "main" {
   }
 }
 
+resource "aws_ecs_task_definition" "main_volume" {
+  count                    = var.volume == "" ? 0 : 1
+  family                   = var.service
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = var.container.cpu
+  memory                   = var.container.memory
+  execution_role_arn       = aws_iam_role.main.arn
+  task_role_arn            = aws_iam_role.main.arn
+  container_definitions    = var.sidecar.image != "" ? "[${local.main_definition}, ${local.sidecar_definition}]" : "[${local.main_definition}]"
+  skip_destroy             = true
+  runtime_platform {
+    operating_system_family = var.windows_deployment ? "WINDOWS_SERVER_2019_CORE" : "LINUX"
+    cpu_architecture        = "X86_64"
+  }
+  volume {
+    name = var.volume
+  }
+}
+
 resource "aws_ecs_task_definition" "main" {
+  count                    = var.volume == "" ? 1 : 0
   family                   = var.service
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
