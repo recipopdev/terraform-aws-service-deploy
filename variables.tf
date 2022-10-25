@@ -23,6 +23,7 @@ variable "container" {
       timeout      = string
       grace_period = string
     })
+    mount_points = list(map(string))
   })
 }
 
@@ -74,18 +75,20 @@ variable "create_bucket" {
 variable "sidecar" {
   description = "Whether to enable service discovery of tasks"
   type = object({
-    name        = string
-    image       = string
-    cpu         = number
-    memory      = number
-    environment = list(map(string))
+    name         = string
+    image        = string
+    cpu          = number
+    memory       = number
+    environment  = list(map(string))
+    mount_points = list(map(string))
   })
   default = {
-    name        = ""
-    image       = ""
-    cpu         = 0
-    memory      = 0
-    environment = [{}]
+    name         = ""
+    image        = ""
+    cpu          = 0
+    memory       = 0
+    environment  = [{}]
+    mount_points = [{}]
   }
 }
 

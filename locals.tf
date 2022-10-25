@@ -12,7 +12,8 @@ locals {
       log_group = var.log_group
       commands  = jsonencode([])
 
-      environment = jsonencode(var.container.environment)
+      environment  = jsonencode(var.sidecar.environment)
+      mount_points = jsonencode(var.sidecar.mount_points)
     }
   )
 
@@ -33,6 +34,7 @@ locals {
         var.create_bucket ? [{ name = "${upper(var.service)}_S3_BUCKET", value = aws_s3_bucket.main[0].bucket }, { name = "${upper(var.service)}_S3_PREFIX", value = " " }] : [],
         var.container.environment
       ))
+      mount_points = jsonencode(var.container.mount_points)
     }
   )
 }

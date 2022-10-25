@@ -11,6 +11,7 @@
       protocol = "tcp"
     }
   ])},
+  "mountPoints": ${mount_points},
   "logConfiguration": {
     "logDriver": "awslogs",
     "options": {
