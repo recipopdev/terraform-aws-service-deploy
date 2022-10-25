@@ -9,7 +9,7 @@ resource "aws_secretsmanager_secret" "main" {
 resource "aws_ecs_service" "main" {
   name                              = var.service
   cluster                           = var.cluster
-  task_definition                   = var.volume == "" ? aws_ecs_task_definition.main.arn : aws_ecs_task_definition.main_volume.arn
+  task_definition                   = var.volume == "" ? aws_ecs_task_definition.main[0].arn : aws_ecs_task_definition.main_volume[0].arn
   launch_type                       = "FARGATE"
   desired_count                     = var.container.count
   force_new_deployment              = true
