@@ -74,14 +74,12 @@ variable "create_bucket" {
 variable "sidecar" {
   description = "Whether to enable service discovery of tasks"
   type = object({
-    name        = string
     image       = string
     cpu         = number
     memory      = number
     environment = list(map(string))
   })
   default = {
-    name        = ""
     image       = ""
     cpu         = 0
     memory      = 0
