@@ -49,6 +49,8 @@ variable "loadbalancer" {
     listener       = string
     security_group = string
     dns            = list(string)
+    # same as ARN
+    id = string
   })
 }
 
@@ -135,6 +137,18 @@ variable "scaling" {
       scale_in_cooldown  = 0
       scale_out_cooldown = 0
     }
+  }
+}
+
+variable "monitoring" {
+  description = "The monitoring settings for the service"
+  type = object({
+    enabled = bool
+    alarm   = string
+  })
+  default = {
+    enabled = false
+    alarm   = ""
   }
 }
 

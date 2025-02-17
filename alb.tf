@@ -35,7 +35,7 @@ resource "aws_lb_listener_rule" "main" {
 
 resource "aws_cloudwatch_metric_alarm" "healthy_hosts" {
   # only want alarm on prod, dev/uat scales down at night
-  count               = local.environment == "prod" ? 1 : 0
+  count               = local.environment == "prod" && var.monitoring.enabled == true ? 1 : 0
   alarm_name          = "${var.service}-HealthyHostCount"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = 1
@@ -45,10 +45,10 @@ resource "aws_cloudwatch_metric_alarm" "healthy_hosts" {
   period              = 300
   threshold           = 1
   alarm_description   = "Triggers when ${var.service} target group has no healthy hosts."
-  alarm_actions       = [aws_sns_topic.devops_alarm[0].arn]
+  alarm_actions       = [var.monitoring.alarm]
 
   dimensions = {
     TargetGroup  = aws_lb_target_group.main.arn_suffix
-    LoadBalancer = "app/core-services-alb/8adee4eb5a99f52f"
+    LoadBalancer = var.loadbalancer.id
   }
 }
