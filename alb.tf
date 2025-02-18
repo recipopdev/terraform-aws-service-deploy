@@ -42,7 +42,7 @@ resource "aws_cloudwatch_metric_alarm" "healthy_hosts" {
   metric_name         = "HealthyHostCount"
   namespace           = "AWS/ApplicationELB"
   statistic           = "Minimum"
-  period              = 300
+  period              = 60
   threshold           = 1
   alarm_description   = "Triggers when ${var.service} target group has no healthy hosts."
   alarm_actions       = [var.monitoring.alarm]
