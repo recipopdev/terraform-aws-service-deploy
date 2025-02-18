@@ -50,6 +50,6 @@ resource "aws_cloudwatch_metric_alarm" "healthy_hosts" {
   dimensions = {
     TargetGroup = aws_lb_target_group.main.arn_suffix
     # needs to be ARN suffix
-    LoadBalancer = regex("loadbalancer/(.*)", var.loadbalancer.id)
+    LoadBalancer = regex("loadbalancer/(.*)", var.loadbalancer.id)[0]
   }
 }
