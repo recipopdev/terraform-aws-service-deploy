@@ -15,7 +15,7 @@ resource "aws_security_group_rule" "allow_ingress_main" {
 }
 
 resource "aws_security_group_rule" "main_egress_traffic" {
-  description       = "Allows Egress traffic to outside world"
+  description       = "Allows egress traffic to outside world"
   type              = "egress"
   protocol          = "tcp"
   from_port         = 443
@@ -26,7 +26,7 @@ resource "aws_security_group_rule" "main_egress_traffic" {
 
 resource "aws_security_group_rule" "allow_egress_rds" {
   count                    = length(var.rds.security_groups)
-  description              = "Allow egress from identity to rds"
+  description              = "Allow egress from ${var.service} to RDS"
   type                     = "egress"
   to_port                  = 3306
   protocol                 = "tcp"
