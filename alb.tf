@@ -36,7 +36,7 @@ resource "aws_lb_listener_rule" "main" {
 resource "aws_cloudwatch_metric_alarm" "healthy_hosts" {
   # only want alarm on prod, dev/uat scales down at night
   count               = local.environment == "prod" && var.monitoring.enabled == true ? 1 : 0
-  alarm_name          = "${var.service}-HealthyHostCount"
+  alarm_name          = "[CRITICAL] ${var.service} Healthy Host Count"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = 1
   metric_name         = "HealthyHostCount"
