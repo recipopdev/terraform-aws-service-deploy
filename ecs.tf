@@ -11,6 +11,7 @@ resource "aws_ecs_service" "main" {
   cluster                           = var.cluster
   task_definition                   = var.volume == "" ? aws_ecs_task_definition.main[0].arn : aws_ecs_task_definition.main_volume[0].arn
   launch_type                       = "FARGATE"
+  platform_version                  = "1.0.0"
   desired_count                     = var.container.count
   force_new_deployment              = true
   health_check_grace_period_seconds = var.container.health_check.grace_period
