@@ -152,6 +152,12 @@ variable "monitoring" {
   }
 }
 
+variable "windows_operating_system_family" {
+  type = string
+  description = "The Windows operating system family to use (e.g., WINDOWS_SERVER_CORE_2019 or WINDOWS_SERVER_CORE_2022)"
+  default = "WINDOWS_SERVER_CORE_2019"
+}
+
 locals {
   environment = terraform.workspace == "default" ? "dev" : terraform.workspace
 }
