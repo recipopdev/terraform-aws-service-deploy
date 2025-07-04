@@ -51,7 +51,7 @@ resource "aws_ecs_task_definition" "main_volume" {
   container_definitions    = var.sidecar.image != "" ? "[${local.main_definition}, ${local.sidecar_definition}]" : "[${local.main_definition}]"
   skip_destroy             = true
   runtime_platform {
-    operating_system_family = var.windows_deployment ? "WINDOWS_SERVER_2019_CORE" : "LINUX"
+    operating_system_family = var.windows_deployment ? var.windows_operating_system_family : "LINUX"
     cpu_architecture        = "X86_64"
   }
   volume {
@@ -71,7 +71,7 @@ resource "aws_ecs_task_definition" "main" {
   container_definitions    = var.sidecar.image != "" ? "[${local.main_definition}, ${local.sidecar_definition}]" : "[${local.main_definition}]"
   skip_destroy             = true
   runtime_platform {
-    operating_system_family = var.windows_deployment ? "WINDOWS_SERVER_2019_CORE" : "LINUX"
+    operating_system_family = var.windows_deployment ? var.windows_operating_system_family : "LINUX"
     cpu_architecture        = "X86_64"
   }
 }
